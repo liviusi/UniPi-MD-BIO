@@ -1,0 +1,75 @@
+\begin{frame}
+	\frametitle{MEMs in EFGs}
+	\framesubtitle{k-Node MEMs in EFGs: Remark}
+	\begin{remark}
+		Given an indexable EFG \(G = (V, E, l)\), for each \((v, w) \in E\)
+		string \(l(v)l(w)\) occurs only as prefix of paths starting with \(v\).
+	\end{remark}
+	\onslide<2-3>Rephrasing what is written above, all occurrences of some string \(S\) in \(G\) spanning at
+	least four nodes can be decomposed as \(\alpha l(u_2 ) \dots l(u_{L-1})\beta\) such that:
+	\begin{enumerate}
+		\item \(u_2 \dots u_{L-1}\) is a path in \(G\) and \(u_2, \dots , u_{L-1}\)
+		are unequivocally identified;
+		\item \(\alpha = l(u_1)[i..||u_1||]\) with \(1 \leq i \leq ||u_1||\) for some \((u_1, u_2 ) \in E\);
+		\item \(\beta = l(u_L)\) for some \((u_{L-1} , u_L ) \in E\)
+		or \(\beta = l(uL )(l(uL+1 )[1..j])\) with \(1 \leq j \leq ||u_{L+1}||\)
+		for some \((u_{L-1} , u_L )\), \((u_L , u_{L+1} ) \in E\).
+	\end{enumerate}
+	\onslide<3>Note that \(\alpha, \beta \neq \epsilon\) and \(\beta\) has as prefix a full node label,
+	\(\alpha\) might spell any suffix of a node label.
+\end{frame}
+
+\begin{frame}
+	\frametitle{MEMs in EFGs}
+	\framesubtitle{k-Node MEMs in EFGs spanning more than 3 nodes: preprocessing}
+	First, we take the text
+	\(
+		T'_3 = \prod_{(u, v), (v, w) \in E} \bigl(l(u)l(v)l(w) \times 0\bigr).
+	\)
+	\begin{enumerate}
+		\item \onslide<2-5> We mark all implicit or explicit nodes \(\bar{p}\) such that the
+		corresponding root-to-\(\bar{p}\) path spells
+		\(l(u)l(v)\) for some \((u, v) \in E\), so that we can query in constant time if $\bar{p}$
+		is such a node.
+		\item \onslide<3-5> We compute pointers from each node $\bar{p}$ to an arbitrarily chosen
+		leaf in the subtree rooted at $\bar{p}$;
+		\item \onslide<4-5>for each node \(v \in V\) of the indexable EFG we build trie $T_v$ for the
+		set of strings ${\bar{l(u)}: (u, v) \in E}$;
+		\item \onslide<5> for each leaf, we store the corresponding path \(uvw\) and the starting
+		position of the suffix inside \(l(u)l(v)l(w)\).
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{MEMs in EFGs}
+	\framesubtitle{k-Node MEMs in EFGs spanning more than 3 nodes: processing}
+	Let \(\bar{p}\) be the suffix tree node of \(T'_3\) reached from the root by spelling
+	\(Q[1..y]\) in the suffix tree until we cannot continue with \(Q[y+1]\):
+	\begin{enumerate}
+		\onslide<2-4>\item If we cannot continue with a \(0\), \(Q[1..y]\) spans no more than 3 nodes, so we can discard
+		it. We can now consider matching \(Q[2..y]\) in \(G\) taking the suffix link of \(\bar{p}\).
+		\onslide<3-4>\item If we can continue with a \(0\) and the occurrences of \(Q[1..y]\) span no more
+		than 2 nodes, we proceed as in the previous step.
+		\onslide<4>\item In this case, \(Q[1..y] = \alpha l(u_2)l(u_3)\) for exactly one \(u_2 \in V\),
+		with \((u_2, u_3) \in E\), we follow the suffix link walk from \(\bar{p}\) until we find the marked
+		node \(\bar{q}\) corresponding to \(l(u_2)l(u_3)\): from \(\bar{q}\) we try to
+		match \(Q[y + 1..]\) until failure, matching \(Q[y + 1..y']\) and reaching node \(\bar{r}\).
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{MEMs in EFGs}
+	\framesubtitle{Algorithm complexity}
+	\begin{theorem}[Algorithm complexity]
+		Let alphabet \(\Sigma\) be of constant size, and let G = \((V, E, l)\) be an indexable
+		Elastic Founder Graph of height \(H\), that is, the maximum number of nodes in a block of
+		\(G\) is \(H\).
+		The algorithm to find \(\kappa\)-node-MEMs spanning \(L>3\) nodes has time complexity
+		\(O(nH^2 + |Q| + M_\kappa)\) with \(n = \sum_{v \in V}|v|\) and \(M_\kappa\) the number
+		of output MEMs.
+	\end{theorem}
+	\onslide<2>\begin{proof}
+		It derives from the complexity of the algorithm to find \(\kappa\)-node MEMs spanning exactly
+		\(L\) nodes given before.
+	\end{proof}
+\end{frame}

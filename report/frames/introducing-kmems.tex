@@ -1,0 +1,31 @@
+\begin{frame}
+	\frametitle{k-MEMs}
+	\framesubtitle{k-MEMs: LEFTMAX, RIGHTMAX}
+	Let \(Q \in \Sigma^+\) be a query string, \(\kappa\) be a threshold, \(lext(i, P, j)\) the left extension
+	of the string \(P[i..j]\) and \(rext(i, P, j)\) the right extension.
+
+	\onslide<2-3>\begin{definition}[LEFTMAX]
+		A match \(([x..y], (i, P, j))\) of \(Q[x..y]\) in \(G\) satisfies the \(LEFTMAX\) property
+		if and only if
+		\[
+			x = 1 \ \vee \ lext(i, P, j) = \emptyset \ \vee \ Q[x-1] \notin lext(i, P, j)
+		\]
+	\end{definition}
+
+	\onslide<3>We can analogously define the RIGHTMAX property.
+\end{frame}
+
+\begin{frame}
+	\frametitle{k-MEMs}
+	\framesubtitle{k-MEMs: Definition}
+	\begin{definition}[\(\kappa\)-MEM]
+		A match \(([x..y], (i, P, j))\) of \(Q[x..y]\) in \(G\) is called a \(\kappa\)-MEM if it satisfies
+		all the following conditions:
+		\begin{enumerate}
+			\item \(LEFTMAX \vee |lext(i, P, j)| \geq 2 \)
+			\item \(RIGHTMAX \vee |rext(i, P, j)| \geq 2 \)
+			\item \(y - x + 1 \geq \kappa\)
+		\end{enumerate}
+	\end{definition}
+\end{frame}
+

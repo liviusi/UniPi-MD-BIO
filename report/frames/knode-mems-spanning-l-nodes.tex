@@ -1,0 +1,47 @@
+\begin{frame}
+	\frametitle{k-Node MEMs spanning exactly L nodes}
+	\framesubtitle{Algorithm to find k-Node MEMs spanning exactly L nodes: prerequisites}
+	\begin{enumerate}
+		\item We call \(P^{L}_{G}\) a path of G spanning exactly \(L\) nodes.
+		\onslide<2-3>\item We define two new symbols \(c\) and \(d\) not originally part of the alphabet \(\Sigma\)
+		and the two operators:
+		\begin{align*}
+			left(u) &= \left\{
+				\begin{array}{l}
+					c \ \text{if} \ lext(u) = \{c\} \\
+					\# \ \text{otherwise}
+				\end{array}
+			\right. && \\
+			right(u) &= \left\{
+				\begin{array}{l}
+					d \ \text{if} \ rext(u) = \{d\} \\
+					\# \ \text{otherwise}
+				\end{array}
+			\right.
+		\end{align*}
+		\onslide<3> \item We define the text
+		\[
+			T_L = 0 \times \prod_{u_1,..,u_L \in P^{L}_{G}}
+			\Bigl(left(u_1) \times l(u_1) \times \dots \times l(u_L) \times right(u_L) \times 0\Bigr).
+		\]
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{k-Node MEMs spanning exactly L nodes}
+	\framesubtitle{Algorithm to find k-Node MEMs spanning exactly L nodes}
+	\begin{enumerate}
+		\item  We modify the \mintinline{python3}|mems_from_bidirectional_bwt| so that it
+		makes use of the symbols defined before we get the result using the
+		algorithm we defined for \(\kappa\)-node MEMs.
+		\onslide<2-4>\item The complexity we get is \(O(|T_L| + |Q| + M_{\kappa, L})\) with \(M_{\kappa, L}\)
+		the number of output MEMs.
+		\onslide<3-4>\item Let \(d\) be the maximum in-degree (or out-degree) of a node, \(n\) the total label length
+		of \(G\). Now we can reformulate the time complexity.
+		
+		\onslide<4>\item \(|T_L|\) is the concatenation of paths of \(G\) of length \(L\):
+		for a node \(v\) the number of paths containing \(l(v)\)
+		is at most \(L \times d^{L-1}\). The complexity can be rewritten as
+		\(O(|Q| + M_{\kappa, L } + n \times L \times d^{L-1})\) which is exponential on \(L\).
+	\end{enumerate}
+\end{frame}

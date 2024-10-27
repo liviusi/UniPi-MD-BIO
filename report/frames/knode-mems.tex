@@ -1,0 +1,54 @@
+\begin{frame}
+	\frametitle{MEMs in Node Labels}
+	\framesubtitle{Node MEMs: definition}
+	\begin{definition}[Node MEM]
+		A \(\kappa\)-MEM between a query string \(Q\) and the label \(l(v)\) of a vertex \(v \in V\)
+		is called a node-MEM.
+	\end{definition}
+
+	\onslide<2-3>To give an algorithm to find node-MEMs we must consider the text
+	\[
+		T_{\text{nodes}} = \prod_{v \in V} 0 \times l(v).
+	\]
+	\onslide<3>We also need a data structure supporting the following operations over a bitvector \(B\):
+	\begin{enumerate}
+		\item \mintinline{python3}|r = rank(B, i)| in \(O(1)\) with \(r = \sum_{j=1}^{i} B[j]\),
+		\item \mintinline{python3}|j = select(B, r)| in \(O(1)\) with \(j \leq i\) the position of
+		the \(r\)-th 1 in \(B\).
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{MEMs in Node Labels}
+	\framesubtitle{Algorithm to find k-node MEMs: prerequisites}
+	We assume we have at our disposal the following procedures:
+	\begin{enumerate}
+		\item \mintinline{python3}|mems_using_bidirectional_bwts| which takes as input two
+		bidirectional BWT indices on strings \(T, Q\) and a threshold \(\kappa\) and outputs
+		\(Q'\) MEM strings with \(|Q'| \geq \kappa\) and for each string \(Q'\) four BWT intervals
+		\(([i_T..j_T], [i'_T..j'_T], [i_Q..j_Q], [i'_Q..j'_Q])\) which represent the maximal
+		matches of \(T\) and \(Q\) in \(O(|T| + |Q|)\) time;
+		\onslide<2-3>\item \mintinline{python3}|mems_from_bidirectional_bwt| which takes as input four BWT
+		intervals and outputs the corresponding MEM string \(Q'\) in \(O(|Q'|)\).
+	\end{enumerate}
+	\onslide<3> For both of these algorithms, one may refer to Algorithm 11.3 and Algorithm 11.4 from
+	Genome-Scale Algorithm Design: Biological Sequence Analysis in the Era of High-Throughput Sequencing
+	(Belazzougui et alia).
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{MEMs in Node Labels}
+	\framesubtitle{Algorithm to find k-node MEMs}
+	We can now describe the algorithm to find node MEMs.
+	\begin{enumerate}
+		\onslide<2-6> \item We build a bitvector \(B\) to mark the location of 0s in \(T_{\text{nodes}}\)
+		so that with the rank operation we can identify the corresponding node in G.
+		\onslide<3-6>\item We call \mintinline{python3}|mems_using_bidirectional_bwts|
+		using bidirectional BWT indices on strings \(T_{\text{nodes}}\) and \(Q\).
+		\onslide<4-6>\item For each string \(Q'\) we get, we call
+		\mintinline{python3}|mems_from_bidirectional_bwt| on its corresponding BWT intervals.
+		\onslide<5-6>\item We use \(B\) to obtain the tuple \((i, P, j)\) in \(O(1)\) time.
+	\end{enumerate}
+	\onslide<6>The algorithm described above has complexity
+	\(O(|T_{\text{nodes}}| + |Q| + N_{\kappa})\) with \(N_{\kappa}\) the number of output MEMs.
+\end{frame}

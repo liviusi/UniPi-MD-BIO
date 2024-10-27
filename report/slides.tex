@@ -1,0 +1,31 @@
+\documentclass[english]{beamer}
+\usepackage[english]{babel}
+\usepackage{minted}
+\usepackage{amsmath}
+\usepackage{physics}
+\newtheorem*{remark}{Remark}
+
+\usetheme{Rochester}
+
+
+\title[Finding Maximal Exact Matches in Graph]{Finding Maximal Exact Matches in Graph}
+\author{G. Trapani}
+\institute{Universit\`a di Pisa}
+\date{13/05/2024}
+\titlegraphic{\includegraphics[height=1.5cm]{images/unipi-marchio.eps}}
+\begin{document}
+
+\frame{\titlepage}
+\logo{
+	\includegraphics[height=1cm]{images/unipi-marchio.eps}
+}
+\setbeamercovered{transparent}
+
+\include{frames/contents.tex}
+\include{frames/prerequisites.tex}
+\include{frames/introducing-kmems.tex}
+\include{frames/knode-mems.tex}
+\include{frames/knode-mems-spanning-l-nodes.tex}
+\include{frames/mems-efg.tex}
+\include{frames/experimental-results.tex}
+\end{document}
